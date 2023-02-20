@@ -23,8 +23,9 @@ const app = express()
 
 app.use(cors())
 
-
+mongoose.set('strictQuery', false);
 mongoose.connect('mongodb+srv://carlos:Monopolis19@dbcluster.khexvht.mongodb.net/FodMet123?retryWrites=true&w=majority',{useNewUrlParser:true, useUnifiedTopology:true})
+
 const db=mongoose.connection
 
 db.on('error', (err)=>{
@@ -35,7 +36,6 @@ db.once('open',()=>{
     console.log('Database connection established')
 })
 
-mongoose.set('strictQuery', false);
 
 const PORT = process.env.PORT || 3050
 //cors
