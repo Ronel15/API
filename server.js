@@ -69,6 +69,6 @@ app.use('/subcategory/add', SubcategoryRoute)
 app.use('/nutrition/add',NutritionRoute)
 app.use('/cart',CartRoute)
 app.use('/calculateCalories' ,CaloriesRoute)
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
 
 // app.use('/images', express.static(path.join(__dirname, 'uploads')));
