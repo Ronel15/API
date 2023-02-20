@@ -34,6 +34,9 @@ db.on('error', (err)=>{
 db.once('open',()=>{
     console.log('Database connection established')
 })
+
+mongoose.set('strictQuery', false);
+
 const PORT = process.env.PORT || 3050
 //cors
 // var cors = require('cors');
