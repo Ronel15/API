@@ -1,6 +1,6 @@
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-
+const PORT = process.env.PORT || 3050
 //meta data
 const options = {
     definition: {
@@ -53,7 +53,7 @@ const swaggerDocs = (app, port) => {
         res.send(swaggerSpec)
     })
 
-    console.log(`version 1 Docs http://localhost:3050/api-docs/#/`);
+    console.log(`version 1 Docs http://localhost:${PORT}/api-docs/#/`);
 
 }
 module.exports = { swaggerDocs };
