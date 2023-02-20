@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const express = require('express');
-const bcrypt = require('bcryptjs');
+const bcryptjs = require('bcryptjs');
 
 const jwt = require('jsonwebtoken')
 const CONFIG = require('../config/config');
@@ -54,7 +54,7 @@ const login=(req,res)=>{
     User.findOne({username})
         .then(user => {
             if(!user) return res.status(404).send({message: 'EL USUARIO NO EXISTE'});
-            bcrypt.compare(password,user.password)
+            bcryptjs.compare(password,user.password)
                     .then(match => {
                         if(match){
                             payload = {
