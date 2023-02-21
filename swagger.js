@@ -41,7 +41,7 @@ const options = {
             }
         }
     },
-    apis: ['./routes/product.routes.js', './routes/ingredients.routes.js', 'mongodb+srv://carlos:Monopolis19@dbcluster.khexvht.mongodb.net/FodMet123?retryWrites=true&w=majority']
+    apis: ['./routes/product.routes.js', './routes/ingredients.routes.js']
 }
 //Docs en Json
 const swaggerSpec = swaggerJSDoc(options);
