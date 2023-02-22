@@ -1,6 +1,5 @@
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const PORT = process.env.PORT || 3050
 //meta data
 const options = {
     definition: {
@@ -24,6 +23,7 @@ const options = {
                         name: { type: 'string', example: 'Ensalada con pera' },
                         description: { type: 'string', example: 'Ensalada con peras frescas' },
                         price: { type: 'number', example: '90' },
+                        Image: {type: 'string'},
                         totalCalories: { type: 'number', example: '12' },
                         inCart: { type: 'boolean' },
                         status: { type: 'boolean' },
@@ -53,7 +53,8 @@ const swaggerDocs = (app, port) => {
         res.send(swaggerSpec)
     })
 
-    console.log(`version 1 Docs http://localhost:${PORT}/api-docs/#/`);
+    console.log(`Documentacion con Swagger local: http://localhost:3050/api-docs/#/`);
+    console.log(`Documentacion con Swagger produccion: http://apifoodmet.up.railway.app/api-docs/#/`);
 
 }
 module.exports = { swaggerDocs };
