@@ -64,12 +64,28 @@ router.get('/search', productControllers.getProductsCart)
 
 /**
  * @swagger
- * /api/product/:
+ * /api/product:
  *   get:
  *     summary: Muestra los productos
  *     tags:
  *       - products
  *     description: Retorna una lista de productos.
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         description: Número de página que se desea mostrar.
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         description: Número máximo de productos que se desea mostrar por página.
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 100
+ *           default: 10
  *     responses:
  *       '200':
  *         description: OK.
@@ -87,6 +103,7 @@ router.get('/search', productControllers.getProductsCart)
  *       '500':
  *         description: Internal Server Error.
  */
+
 router.get('/:key/:value', productControllers.find, productControllers.show)
 
 /**
@@ -101,18 +118,39 @@ router.get('/:key/:value', productControllers.find, productControllers.show)
  *       description: Objeto de producto que se agregará a la base de datos.
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/Product'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Nombre del producto.
+ *               description:
+ *                 type: string
+ *                 description: Descripción del producto.
+ *               price:
+ *                 type: number
+ *                 description: Precio del producto.
+ *               totalCalories:
+ *                 type: number
+ *                 description: Total de calorías del producto.
+ *               inCart:
+ *                 type: boolean
+ *                 description: Define si el producto está en el carrito de compras.
+ *               status:
+ *                 type: boolean
+ *                 description: Define si el producto está disponible para la venta.
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *                 description: Imagen del producto.
  *     responses:
  *       '200':
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                 message:
- *                   type: string
- *                   description: Mensaje de éxito.
+ *               $ref: '#/components/schemas/Product'
  *       '400':
  *         description: La solicitud no se puede procesar debido a una sintaxis incorrecta.
  *         content:

@@ -23,9 +23,9 @@ const options = {
                         name: { type: 'string', example: 'Ensalada con pera' },
                         description: { type: 'string', example: 'Ensalada con peras frescas' },
                         price: { type: 'number', example: '90' },
-                        Image: {type: 'string'},
                         totalCalories: { type: 'number', example: '12' },
                         inCart: { type: 'boolean' },
+                        image: { type: 'string' },
                         status: { type: 'boolean' },
                     }
                 },
