@@ -23,8 +23,8 @@ const app = express()
 
 app.use(cors())
 
-mongoose.connect(process.env.DB_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true });
-
+mongoose.set('strictQuery', false);
+mongoose.connect('mongodb+srv://carlos:Monopolis19@dbcluster.khexvht.mongodb.net/FodMet123?retryWrites=true&w=majority',{useNewUrlParser:true, useUnifiedTopology:true})
 
 const db=mongoose.connection
 
