@@ -35,11 +35,15 @@ const app = express();
 //     });
 //   },
 // }));
+//inicio cors
 const corsOptions = {
-    origin: '*',
+    origin: 'https://apifoodmet.up.railway.app/api-docs/#/',
     optionsSuccessStatus: 200,
   };
   app.use(cors(corsOptions));
+  
+
+//fin cors
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
