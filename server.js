@@ -71,4 +71,4 @@ app.use('/cart',CartRoute)
 app.use('/calculateCalories' ,CaloriesRoute)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
 
-app.use('/images', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
