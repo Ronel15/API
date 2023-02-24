@@ -37,7 +37,7 @@ db.once('open',()=>{
 })
 
 
-// const PORT = process.env.PORT || 3050
+const PORT = process.env.PORT || 3050
 //cors
 // var cors = require('cors');
 // var corsOptions ={
