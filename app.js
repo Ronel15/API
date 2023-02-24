@@ -21,18 +21,20 @@ const swaggerDocument = require('./swagger');
 const app = express();
 
 app.use(cors());
-// CORS
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  
-    if (req.method === 'OPTIONS') {
-      res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
-      return res.status(200).json({});
+// Configuración de CORS
+const allowedOrigins = ['http://localhost:3050', 'https://apifoodmet.up.railway.app/api-docs/#/'];
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
     }
-  
-    next();
-  });
+    return callback(null, true);
+  },
+}));
+
+
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
