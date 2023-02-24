@@ -16,10 +16,30 @@ const AuthToken = require('./middleware/AuthToken');
 const CaloriesRoute = require('./routes/Calories.routes');
 const { swaggerDocs: V1SwaggerDocs } = require('./swagger');
 const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger');
 
 const app = express();
 
-app.use(cors());
+// app.use(cors({
+//   origin: function(origin, callback) {
+//     // Lista de orígenes permitidos
+//     const allowedOrigins = ['http://localhost:3050', 'https://apifoodmet.up.railway.app'];
+//     if (!origin) return callback(null, true);
+//     if (allowedOrigins.indexOf(origin) === -1) {
+//       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+//       return callback(new Error(msg), false);
+//     }
+//     // Permite los encabezados necesarios
+//     return callback(null, true, {
+//       exposedHeaders: ['Content-Length', 'Authorization', 'X-Powered-By', 'Content-Type', 'access-control-allow-origin', 'access-control-allow-headers'],
+//     });
+//   },
+// }));
+const corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200,
+  };
+  app.use(cors(corsOptions));
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
