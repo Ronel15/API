@@ -5,21 +5,24 @@ const Product = require('../models/Product');
 const Cart = require('../models/Cart')
 const Subcategory = require("../models/Subcategory");
 const img = require('../config/config')
-
-const index = (req, res, next) => {
+const index = async (req, res, next) => {
   const limit = parseInt(req.query.limit, 10) || 9;
   const page = parseInt(req.query.page, 10) || 1;
 
-  Product.paginate({}, { limit, page })
-    .then((response) => {
-      res.json(response);
-    })
-    .catch((error) => {
-      res.json({
-        message: "Error",
-      });
+  try {
+    const response = await Product.paginate({}, { limit, page });
+    res.json({
+      success: true,
+      data: response,
     });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: "Error retrieving products",
+    });
+  }
 };
+
 //show the list of products
 // const index =(req, res, next)=> {
 // const limit = parseInt(req.query.limit,10) ||10;
