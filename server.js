@@ -23,8 +23,12 @@ const app = express()
 
 app.use(cors())
 
-mongoose.set('strictQuery', false);
-mongoose.connect('mongodb+srv://carlos:Monopolis19@dbcluster.khexvht.mongodb.net/FodMet123?retryWrites=true&w=majority',{useNewUrlParser:true, useUnifiedTopology:true})
+const PORT = process.env.PORT || 3050;
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port http://localhost:${PORT}`);
+    V1SwaggerDocs(app, PORT);
+});
 
 const db=mongoose.connection
 
@@ -37,7 +41,7 @@ db.once('open',()=>{
 })
 
 
-const PORT = process.env.PORT || 3050
+// const PORT = process.env.PORT || 3050
 //cors
 // var cors = require('cors');
 // var corsOptions ={
@@ -71,4 +75,4 @@ app.use('/cart',CartRoute)
 app.use('/calculateCalories' ,CaloriesRoute)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use('/images', express.static(path.join(__dirname, 'uploads')));
