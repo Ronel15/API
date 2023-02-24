@@ -29,7 +29,7 @@ mongoose.connect('mongodb+srv://carlos:Monopolis19@dbcluster.khexvht.mongodb.net
 const db=mongoose.connection
 
 db.on('error', (err)=>{
-    console.log(err)
+    console.log(err) 
 })
 
 db.once('open',()=>{
