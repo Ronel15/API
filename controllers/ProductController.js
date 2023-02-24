@@ -61,7 +61,7 @@ const store = (req, res, next) => {
           ingredients: req.body.ingredients
         });
         if (req.file) {
-          const url = process.env.IMG || "https://apifoodmet.up.railway.app/api-docs/#";
+          const url =  "https://apifoodmet.up.railway.app/api-docs/#";
           product.image = url + '/uploads/' + req.file.filename;
         }
         product
