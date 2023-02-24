@@ -67,8 +67,12 @@ const store = (req, res, next) => {
           ingredients: req.body.ingredients
         });
         if (req.file) {
-          const url = req.protocol + '://' + req.get('host')
-          product.image = url + '/uploads/' + req.file.filename
+          // const url = req.protocol + '://' + req.get('host')
+          // product.image = url + '/uploads/' + req.file.filename
+
+          //movil
+          const url = img
+          product.image  = url + '/uploads/' + req.file.filename
 
 
         }
