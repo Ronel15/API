@@ -1,4 +1,5 @@
 const app = require('./app');
+const cors = require('cors');
 // const db = require('./database/db');
 
 const {swaggerDocs: V1SwaggerDocs} = require('./swagger')
