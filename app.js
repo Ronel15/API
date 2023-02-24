@@ -20,20 +20,21 @@ const swaggerDocument = require('./swagger');
 
 const app = express();
 
-app.use(cors());
-// Configuración de CORS
-const allowedOrigins = ['http://localhost:3050', 'https://apifoodmet.up.railway.app/api-docs/#/'];
 app.use(cors({
   origin: function(origin, callback) {
+    // Lista de orígenes permitidos
+    const allowedOrigins = ['http://localhost:3050', 'https://apifoodmet.up.railway.app'];
     if (!origin) return callback(null, true);
     if (allowedOrigins.indexOf(origin) === -1) {
       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
       return callback(new Error(msg), false);
     }
-    return callback(null, true);
+    // Permite los encabezados necesarios
+    return callback(null, true, {
+      exposedHeaders: ['Content-Length', 'Authorization', 'X-Powered-By', 'Content-Type', 'access-control-allow-origin', 'access-control-allow-headers'],
+    });
   },
 }));
-
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
