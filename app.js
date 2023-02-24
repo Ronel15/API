@@ -20,7 +20,7 @@ const swaggerDocument = require('./swagger');
 
 const app = express();
 
-const allowedHeaders = ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'];
+const allowedHeaders = ['http://localhost:3050', 'https://apifoodmet.up.railway.app','Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'];
 
 app.use(cors({
   origin: function(origin, callback) {
