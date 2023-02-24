@@ -4,7 +4,6 @@ const mongoose = require('mongoose')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const path = require('path');
-//para inicar la api "npm run dev"
 const ProductRoute= require('./routes/product.routes')
 const UserRoute=require('./routes/user.routes')
 const AuthRoute=require('./routes/auth.routes')
@@ -36,30 +35,16 @@ db.once('open',()=>{
     console.log('Database connection established')
 })
 
-
-const PORT = process.env.PORT || 3050
-//cors
-// var cors = require('cors');
-// var corsOptions ={
-//     origin:'*',
-//     optionsSuccessStatus:200
-// }
-// app.use(cors(corsOptions))
-
-
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 app.use('/uploads', express.static('uploads'))
 
-
-
-app.listen(PORT,()=>{
-    console.log(`server is running on port http://localhost:${PORT}`)
-    V1SwaggerDocs(app, PORT)
+app.listen(process.env.PORT || 3050, () => {
+    console.log(`server is running on port http://localhost:${process.env.PORT || 3050}`)
+    V1SwaggerDocs(app, process.env.PORT || 3050)
 })
 
-// app.use(AuthToken)
 app.use('/auth',AuthRoute)
 app.use('/api/product',ProductRoute)
 app.use('/user',UserRoute)
@@ -70,5 +55,3 @@ app.use('/nutrition/add',NutritionRoute)
 app.use('/cart',CartRoute)
 app.use('/calculateCalories' ,CaloriesRoute)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
-
-// app.use('/images', express.static(path.join(__dirname, 'uploads')));
