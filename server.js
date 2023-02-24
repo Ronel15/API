@@ -23,12 +23,8 @@ const app = express()
 
 app.use(cors())
 
-const PORT = process.env.PORT || 3050;
+mongoose.connect(process.env.DB_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port http://localhost:${PORT}`);
-    V1SwaggerDocs(app, PORT);
-});
 
 const db=mongoose.connection
 
