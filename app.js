@@ -16,26 +16,10 @@ const AuthToken = require('./middleware/AuthToken');
 const CaloriesRoute = require('./routes/Calories.routes');
 const { swaggerDocs: V1SwaggerDocs } = require('./swagger');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger');
 
 const app = express();
 
-const allowedOrigins = ['https://apifoodmet.up.railway.app'];
-
-app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  headers: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
-}));
-
-
-
+app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
