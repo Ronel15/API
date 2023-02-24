@@ -1,5 +1,5 @@
 const app = require('./app');
-const db = require('./database/db');
+// const db = require('./database/db');
 
 const {swaggerDocs: V1SwaggerDocs} = require('./swagger')
 const PORT = process.env.PORT || 3050;
