@@ -45,7 +45,6 @@ const show = (req, res) => {
 };
 //add  new product
 const store = (req, res, next) => {
-
   let name = req.body.name;
   Product.findOne({ name })
     .then(product => {
@@ -59,23 +58,11 @@ const store = (req, res, next) => {
           subcategory: req.body.subcategory,
           totalCalories: req.body.totalCalories,
           inCart: req.body.inCart,
-
-          // images: [
-          //   { data: req.files[0].buffer, contentType: req.files[0].mimetype },
-          //   { data: req.files[1].buffer, contentType: req.files[1].mimetype },
-          //   { data: req.files[2].buffer, contentType: req.files[2].mimetype }
-          // ],
           ingredients: req.body.ingredients
         });
         if (req.file) {
-          // const url = req.protocol + '://' + req.get('host')
-          // product.image = url + '/uploads/' + req.file.filename
-
-          //movil
-          const url = img
-          product.image  = url + '/uploads/' + req.file.filename
-
-
+          const url = process.env.IMG || "https://apifoodmet.up.railway.app/api-docs/#";
+          product.image = url + '/uploads/' + req.file.filename;
         }
         product
           .save()
@@ -94,7 +81,7 @@ const store = (req, res, next) => {
           message: "The product is already registered in the database"
         });
       }
-    })
+    });
 };
 
 const update = (req, res) => {
