@@ -4,6 +4,7 @@ const { populate } = require("../models/Product");
 const Product = require('../models/Product');
 const Cart = require('../models/Cart')
 const Subcategory = require("../models/Subcategory");
+const img = require('../config/config')
 
 const index = (req, res, next) => {
   const limit = parseInt(req.query.limit, 10) || 9;
