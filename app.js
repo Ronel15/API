@@ -16,6 +16,7 @@ const AuthToken = require('./middleware/AuthToken');
 const CaloriesRoute = require('./routes/Calories.routes');
 const { swaggerDocs: V1SwaggerDocs } = require('./swagger');
 const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger');
 
 const app = express();
 
