@@ -31,7 +31,7 @@ app.use(cors({
     }
     return callback(null, true);
   },
-  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
+  headers: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
 }));
 
 
