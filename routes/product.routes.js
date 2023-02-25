@@ -411,7 +411,7 @@ router.get('/movil/', productControllers.indexMovil);
  *   get:
  *     summary: Muestra los productos  para movil
  *     tags:
- *       - products
+ *       - movil
  *     description: Retorna una lista de productos.
  *     parameters:
  *       - in: query

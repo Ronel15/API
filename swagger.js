@@ -13,7 +13,16 @@ const options = {
             {
                 name: "ingredients",
                 description: "API para ingredients"
+            },
+            {
+                name: "categories",
+                description: "API para categorias"
+            },
+            {
+                name: "movil",
+                description: "API para movil"
             }
+            
         ],
         components: {
             schemas: {
@@ -23,6 +32,7 @@ const options = {
                         name: { type: 'string', example: 'Ensalada con pera' },
                         description: { type: 'string', example: 'Ensalada con peras frescas' },
                         price: { type: 'number', example: '90' },
+                        nutrition: {type: 'string'},
                         totalCalories: { type: 'number', example: '12' },
                         inCart: { type: 'boolean' },
                         image: { type: 'string' },
@@ -41,7 +51,7 @@ const options = {
             }
         }
     },
-    apis: ['./routes/product.routes.js', './routes/ingredients.routes.js']
+    apis: ['./routes/product.routes.js', './routes/ingredients.routes.js', './routes/Category.routes.js']       //./routes/*.js
 }
 //Docs en Json
 const swaggerSpec = swaggerJSDoc(options);

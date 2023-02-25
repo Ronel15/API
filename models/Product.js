@@ -39,6 +39,7 @@ const productSchema = new Schema
             },
             category: {
                 type: mongoose.Types.ObjectId,
+                ref: 'Category'
             },
             subcategory: {
                 type: mongoose.Types.ObjectId,

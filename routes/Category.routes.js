@@ -5,8 +5,6 @@ const app = express()
 const CategoryController  = require('../controllers/CategoryController')
 const upload = require('../middleware/upload')
 
-
-
 // app.use(AuthToken)
 
 /**
