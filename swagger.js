@@ -58,7 +58,14 @@ const swaggerSpec = swaggerJSDoc(options);
 
 const swaggerDocs = (app, port) => {
     // app.use('/api/product/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-    app.use('/api/product/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { docExpansion: 'none' }));
+    // app.use('/api/product/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { docExpansion: 'none' }));
+    app.use('/api/product/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+        explorer: false,
+        docExpansion: "none",
+        defaultModelsExpandDepth: -1
+    }));
+    
+    
     app.get('/api/product/docs.json', (req, res) => {
         res.setHeader('content-Type', 'application/json');
         res.send(swaggerSpec)
