@@ -248,7 +248,7 @@ const indexMovil = (req, res, next) => {
   const limit = parseInt(req.query.limit, 10) || 6
   const page = parseInt(req.query.page, 10) || 1;
 
-  Product.paginate({}, { limit, page, select: 'name price image' })
+  Product.paginate({}, { limit, page, select: 'name price image nutrition' })
     .then((response) => {
       res.json(response.docs);
     })

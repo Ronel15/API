@@ -35,8 +35,14 @@ const store = (req, res, next) => {
           name: req.body.name,
         });
         if (req.file) {
-          const url = req.protocol + '://' + req.get('host')
-          category.image = url + '/uploads/' + req.file.filename
+          // const url = req.protocol + '://' + req.get('host')
+          // category.image = url + '/uploads/' + req.file.filename
+          const IMG_BASE = process.env.IMG_BASE || "https://apifoodmet.up.railway.app";
+          const IMG_UPLOADS = process.env.IMG_UPLOADS || "/uploads/";
+          const IMG_URL = IMG_BASE + IMG_UPLOADS + req.file.filename;
+          const url = img
+          // product.image  = url + '/uploads/' + req.file.filename
+          category.image = IMG_URL;
         }
         category
           .save()
