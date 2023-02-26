@@ -24,6 +24,9 @@ const ingredientsSchema = new Schema
             },
             status: {
                 type: Boolean, default: true        
+            },
+            unidad: {
+                type: String        
             }
 
         }

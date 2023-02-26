@@ -29,7 +29,8 @@ const store = (req, res) => {
         name: req.body.name,
         calories: req.body.calories,
         status: req.body.status,
-        familia: req.body.familia
+        familia: req.body.familia,
+        unidad: req.body.unidad
     });
 
     ingredient
