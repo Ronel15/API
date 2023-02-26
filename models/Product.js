@@ -53,7 +53,7 @@ const productSchema = new Schema
                 type: String
             },
 
-            ingredients: [IngredientSchema],
+            ingredients: [],
 
 
         }, { timestamps: true })
