@@ -5,11 +5,7 @@ const Schema = mongoose.Schema
 const mongoosePaginate = require('mongoose-paginate-v2');
 const Ingredients = require('./Ingredients');
 
-const IngredientSchema = new Schema({
-    name: String,
-    calories: Number,
 
-});
 // const Product2 = mongoose.model('Products2', subSchema)
 // module.exports=Product2
 
@@ -34,8 +30,7 @@ const productSchema = new Schema
                 type: Boolean, default: false
             },
             nutrition: {
-                type: mongoose.Types.ObjectId,
-                ref: 'Nutrition'
+                type: Boolean, default: false,
             },
             category: {
                 type: mongoose.Types.ObjectId,
@@ -54,6 +49,11 @@ const productSchema = new Schema
             },
 
             ingredients: [],
+            
+            time: {
+                type: Number
+            },
+
 
 
         }, { timestamps: true })

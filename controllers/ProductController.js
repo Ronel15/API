@@ -44,9 +44,11 @@ const show = (req, res) => {
   return res.status(200).send({ products });
 };
 //add  new product
+
 const store = (req, res, next) => {
 
   let name = req.body.name;
+  
   Product.findOne({ name })
     .then(product => {
       if (!product) {
@@ -57,16 +59,23 @@ const store = (req, res, next) => {
           nutrition: req.body.nutrition,
           category: req.body.category,
           subcategory: req.body.subcategory,
-          totalCalories: req.body.totalCalories,
           inCart: req.body.inCart,
-
+          time: req.body.time,
           // images: [
           //   { data: req.files[0].buffer, contentType: req.files[0].mimetype },
           //   { data: req.files[1].buffer, contentType: req.files[1].mimetype },
           //   { data: req.files[2].buffer, contentType: req.files[2].mimetype }
           // ],
-          ingredients: req.body.ingredients
+          ingredients: req.body.ingredients,
         });
+
+        // Calcular el total de calorías
+        // let totalCalories = 0;
+        // for (let i = 0; i < product.ingredients.length; i++) {
+        //   totalCalories += product.ingredients[i].calories;
+        // }
+        // product.totalCalories = totalCalories;
+
         if (req.file) {
           // const url = req.protocol + '://' + req.get('host')
           // product.image = url + '/uploads/' + req.file.filename
@@ -78,9 +87,8 @@ const store = (req, res, next) => {
           const url = img
           // product.image  = url + '/uploads/' + req.file.filename
           product.image = IMG_URL;
-
-
         }
+
         product
           .save()
           .then(response => {
