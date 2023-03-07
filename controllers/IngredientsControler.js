@@ -17,6 +17,22 @@ const index = (req, res) => {
         });
 };
 
+const indexTodo = (req, res) => {
+    const limit = parseInt(req.query.limit, 200) || 100;
+    const page = parseInt(req.query.page, 10) || 1;
+
+    Ingredients.paginate({}, { limit, page })
+        .then((ingredients) => {
+            res.json(ingredients);
+        })
+        .catch((error) => {
+            res.status(500).json({
+                message: "Error",
+                error
+            });
+        });
+};
+
 const show = (req, res) => {
     if (req.body.error) return res.status(500).send({ error });
     if (!req.body.ingredients) return res.status(404).send({ message: "NOT FOUND" });
@@ -152,4 +168,5 @@ module.exports = {
     removeById,
     search,
     category,
+    indexTodo,
 };

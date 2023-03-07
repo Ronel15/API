@@ -5,6 +5,7 @@ const app = express()
 const IngredientsControlller= require('../controllers/IngredientsControler')
 
 router.get('/', IngredientsControlller.index)
+router.get('/todo', IngredientsControlller.indexTodo)
 
 
 // app.use(AuthToken)
