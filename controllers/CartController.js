@@ -88,25 +88,26 @@ const Product = require("../models/Product");
 
 
 //cart movil
-const getCart =async (req, res) => {
+const getCart = async (req, res) => {
   try {
-    const carts = await Cart.find();
-    res.json(carts);
+  const carts = await Cart.find().populate('Products', 'name price image');
+  res.json({ docs: carts });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+  res.status(500).json({ error: error.message });
   }
-};
+  };
+
 const getProductInCart = async (req, res) => {
   try {
     const cartId = req.params.cartId;
     const productId = req.params.productId;
 
-    const cart = await Cart.findById(cartId);
+    const cart = await Cart.findById(cartId).populate('productos');
     if (!cart) {
       return res.status(404).json({ error: 'El carrito no existe' });
     }
 
-    const product = cart.products.find(p => p._id == productId);
+    const product = cart.productos.find(p => p._id == productId);
     if (!product) {
       return res.status(404).json({ error: 'El producto no existe en este carrito' });
     }
@@ -116,6 +117,7 @@ const getProductInCart = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 
 // const addToCart = async (req, res, next) => {
@@ -164,27 +166,57 @@ const getProductInCart = async (req, res) => {
 
 
 
+// const addToCart = async (req, res) => {
+//   try {
+//     let carrito = await Cart.findById(req.params.id);
+//     // Si `carrito` no existe, crea un nuevo carrito con una propiedad `productos` vacía
+// if (!carrito) {
+//   carrito = new Cart({
+//     productos: []
+//   });
+// }
+
+//     const producto = await Product.findById(req.body.productoId);
+//     if (!producto) {
+//       return res.status(404).json({ error: 'Producto no encontrado' });
+//     }
+//     carrito.productos.push(producto);
+//     await carrito.save();
+//     res.json(carrito);
+//   } catch (error) {
+//     res.status(400).json({ error: error.message });
+//   }
+// };
+
 const addToCart = async (req, res) => {
   try {
-    let carrito = await Cart.findById(req.params.id);
-    // Si `carrito` no existe, crea un nuevo carrito con una propiedad `productos` vacía
-if (!carrito) {
-  carrito = new Cart({
-    productos: []
-  });
-}
-
-    const producto = await Product.findById(req.body.productoId);
-    if (!producto) {
-      return res.status(404).json({ error: 'Producto no encontrado' });
+    // const idCart= await findOne({_id:'6409f162f8b87f398e28e971'})
+    const productoId = req.params.id;
+    const product = await Product.findById(productoId);
+    console.log(product);
+    if (!product) {
+      return res.status(404).json({ error: 'El producto no existe' });
     }
-    carrito.productos.push(producto);
-    await carrito.save();
-    res.json(carrito);
+
+    let cart = await Cart.findById(req.params.id);
+    if (!cart) {
+      cart = new Cart({
+        productos: [
+          product
+        ]
+      });
+    }
+    cart.Products.push(product);
+    //cart.Products.push(product);
+    await cart.save();
+
+    res.json(cart);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
+
+
 const updateCart = async (req, res, next) => {
   try {
     const { cartId } = req.params;
