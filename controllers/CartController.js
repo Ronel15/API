@@ -90,7 +90,7 @@ const Product = require("../models/Product");
 //cart movil
 const getCart = async (req, res) => {
   try {
-  const carts = await Cart.find().populate();
+  const carts = await Cart.find().populate('Products', 'name price image');
   res.json({ docs: carts });
   } catch (error) {
   res.status(500).json({ error: error.message });
@@ -188,38 +188,11 @@ const getProductInCart = async (req, res) => {
 //   }
 // };
 
-// const addToCart = async (req, res) => {
-//   try {
-//     // const idCart= await findOne({_id:'6409f162f8b87f398e28e971'})
-//     const productoId = req.params.id;
-//     const product = await Product.findById(productoId);
-//     console.log(product);
-//     if (!product) {
-//       return res.status(404).json({ error: 'El producto no existe' });
-//     }
-
-//     let cart = await Cart.findById(req.params.id);
-//     if (!cart) {
-//       cart = new Cart({
-//         productos: [
-//           product
-//         ]
-//       });
-//     }
-//     cart.Products.push(product);
-//     //cart.Products.push(product);
-//     await cart.save();
-
-//     res.json(cart);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
-
 const addToCart = async (req, res) => {
   try {
-    const productId = req.params.id;
-    const product = await Product.findById(productId);
+    // const idCart= await findOne({_id:'6409f162f8b87f398e28e971'})
+    const productoId = req.params.id;
+    const product = await Product.findById(productoId);
     console.log(product);
     if (!product) {
       return res.status(404).json({ error: 'El producto no existe' });
@@ -229,61 +202,19 @@ const addToCart = async (req, res) => {
     if (!cart) {
       cart = new Cart({
         productos: [
-          {
-            _id: product._id,
-            name: product.name,
-            description: product.description,
-            price: product.price,
-            image: product.image,
-            totalCalories: product.totalCalories,
-            nutrition: product.nutrition,
-            category: product.category,
-            subcategory: product.subcategory,
-            ingredients: product.ingredients.map(i => ({
-              name: i.name,
-              value: i.value,
-              calories: i.calories,
-              unidad: i.unidad,
-              weight: i.weight
-            })),
-            
-            cantidad: 1
-          }
+          product
         ]
       });
-    } else {
-      const productIndex = cart.productos.findIndex(p => p._id === productId);
-      if (productIndex !== -1) {
-        cart.productos[productIndex].cantidad++;
-      } else {
-        cart.productos.push({
-          _id: product._id,
-          name: product.name,
-          description: product.description,
-          price: product.price,
-          image: product.image,
-          totalCalories: product.totalCalories,
-          nutrition: product.nutrition,
-          category: product.category,
-          subcategory: product.subcategory,
-          ingredients: product.ingredients.map(i => ({
-            name: i.name,
-            value: i.value,
-            calories: i.calories,
-            unidad: i.unidad,
-            weight: i.weight
-          })),
-          cantidad: 1
-        });
-      }
     }
-
+    cart.Products.push(product);
+    //cart.Products.push(product);
     await cart.save();
+
     res.json(cart);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-}
+};
 
 
 const updateCart = async (req, res, next) => {
