@@ -24,12 +24,28 @@ const Schema = mongoose.Schema;
 // module.exports = Cart;
 
 
-const cartSchema = new mongoose.Schema({
+const cartSchema = new Schema({
   Products: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Products'
+    name: String,
+    description: String,
+    price: Number,
+    totalCalories: Number, // agregado
+    inCart: Boolean,
+    nutrition: Boolean,
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category'
+    },
+    subcategory: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Subcategory"
+    },
+    status: Boolean,
+    image: String,
+    time: Number
   }]
 });
+
 
 const Cart = mongoose.model('Cart', cartSchema);
 

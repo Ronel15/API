@@ -191,39 +191,27 @@ const getProductInCart = async (req, res) => {
 const addToCart = async (req, res) => {
   try {
     const productoId = req.params.id;
-    const product = await Product.findById(productoId);
-    console.log(product);
+    const product = await Product.findById(productoId)
+      .select('-__v -createdAt -updatedAt') // Excluir campos que no se necesitan
+      .lean();
+
     if (!product) {
       return res.status(404).json({ error: 'El producto no existe' });
     }
+
+    // Agregar totalCalories al producto
+    product.totalCalories = 500; // Cambiar 500 por el valor real de totalCalories
 
     let cart = await Cart.findById(req.params.id);
     if (!cart) {
       cart = new Cart({
         productos: [
-          {
-            product: product,
-            totalCalories: product.totalCalories
-          }
+          product
         ]
       });
-    } else {
-      const existingProductIndex = cart.productos.findIndex(
-        (p) => p.product._id.toString() === productoId.toString()
-      );
-      if (existingProductIndex !== -1) {
-        cart.productos[existingProductIndex].quantity++;
-      } else {
-        cart.productos.push({
-          product: product,
-          totalCalories: product.totalCalories
-        });
-      }
     }
-
+    cart.Products.push(product);
     await cart.save();
-
-    console.log(cart); // Agregar esta línea para ver el contenido del carrito después de agregar el producto
 
     res.json(cart);
   } catch (error) {
