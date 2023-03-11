@@ -90,7 +90,7 @@ const Product = require("../models/Product");
 //cart movil
 const getCart = async (req, res) => {
   try {
-  const carts = await Cart.find().populate('Products', 'name price image');
+  const carts = await Cart.find().populate();
   res.json({ docs: carts });
   } catch (error) {
   res.status(500).json({ error: error.message });
@@ -246,6 +246,7 @@ const addToCart = async (req, res) => {
               unidad: i.unidad,
               weight: i.weight
             })),
+            
             cantidad: 1
           }
         ]
@@ -277,13 +278,12 @@ const addToCart = async (req, res) => {
       }
     }
 
-    const docs = await cart.save(); // save the updated cart in docs variable
-    res.json(docs); // send docs as response
+    await cart.save();
+    res.json(cart);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 }
-
 
 
 const updateCart = async (req, res, next) => {
