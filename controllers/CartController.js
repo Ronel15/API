@@ -190,7 +190,6 @@ const getProductInCart = async (req, res) => {
 
 const addToCart = async (req, res) => {
   try {
-    // const idCart= await findOne({_id:'6409f162f8b87f398e28e971'})
     const productoId = req.params.id;
     const product = await Product.findById(productoId);
     console.log(product);
@@ -202,13 +201,29 @@ const addToCart = async (req, res) => {
     if (!cart) {
       cart = new Cart({
         productos: [
-          product
+          {
+            product: product,
+            totalCalories: product.totalCalories
+          }
         ]
       });
+    } else {
+      const existingProductIndex = cart.productos.findIndex(
+        (p) => p.product._id.toString() === productoId.toString()
+      );
+      if (existingProductIndex !== -1) {
+        cart.productos[existingProductIndex].quantity++;
+      } else {
+        cart.productos.push({
+          product: product,
+          totalCalories: product.totalCalories
+        });
+      }
     }
-    cart.Products.push(product);
-    //cart.Products.push(product);
+
     await cart.save();
+
+    console.log(cart); // Agregar esta línea para ver el contenido del carrito después de agregar el producto
 
     res.json(cart);
   } catch (error) {
