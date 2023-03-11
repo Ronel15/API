@@ -95,7 +95,21 @@ const getCart = async (req, res) => {
   } catch (error) {
   res.status(500).json({ error: error.message });
   }
-  };
+};
+
+const getCartById = async (req, res) => {
+  try {
+    const cart = await Cart.findById(req.params.id).populate('Products', 'name price image');
+    if (!cart) {
+      return res.status(404).json({ error: 'Cart not found' });
+    }
+    res.json({ docs: [cart] });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 
 const getProductInCart = async (req, res) => {
   try {
@@ -259,5 +273,6 @@ module.exports = {
   addToCart,
   removeFromCart,
   updateCart,
-  getProductInCart
+  getProductInCart,
+  getCartById
 };

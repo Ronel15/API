@@ -17,6 +17,7 @@ const cartController = require('../controllers/CartController');
 router.get('/cart', cartController.getCart);
 router.post('/:id/agregar-producto', cartController.addToCart);
 router.delete('/cart/:id', cartController.removeFromCart);
+router.get('/find/:id', cartController.getCartById);
 router.put('/cart/:id', cartController.updateCart);
 
 module.exports = router;
