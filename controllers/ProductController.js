@@ -182,18 +182,28 @@ const searchProductByName = async (req, res) => {
 const subcategory = async (req, res, next) => {
   const { subcategoryId } = req.params;
   try {
-    const products = await Product.find({ subcategory: subcategoryId }).populate('category').populate('subcategory');
+    const products = await Product.find({ subcategory: subcategoryId })
+      .populate('category')
+      .populate('subcategory');
 
     if (products.length === 0) {
-      res.json('No hay productos')
-    }
-    else {
-      res.json(products);
+      const response = {
+        docs: 'No hay productos',
+        // docs: 'Aquí va la documentación de la respuesta'
+      };
+      res.json(response);
+    } else {
+      const response = {
+        docs: products,
+        // docs: 'Aquí va la documentación de la respuesta'
+      };
+      res.json(response);
     }
   } catch (error) {
-    res.status(400).json({ message: 'Error al procesar la petición' })
+    res.status(400).json({ message: 'Error al procesar la petición' });
   }
-}
+};
+
 const category = async (req, res, next) => {
   const { categoryId } = req.params;
   const limit = parseInt(req.query.limit, 10) || 9;
