@@ -188,7 +188,7 @@ const subcategory = async (req, res, next) => {
 
     if (products.length === 0) {
       const response = {
-        docs: 'No hay productos',
+        data: 'No hay productos',
         // docs: 'Aquí va la documentación de la respuesta'
       };
       res.json(response);
