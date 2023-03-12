@@ -20,6 +20,47 @@ const index = (req, res, next) => {
       });
     });
 };
+
+
+const subcategory = async (req, res, next) => {
+  const { subcategoryId } = req.params;
+  const limit = parseInt(req.query.limit, 10) || 1;
+  const page = parseInt(req.query.page, 10) || 1;
+  const skip = (page - 1) * limit;
+
+  try {
+    const [docs, totalDocs] = await Promise.all([
+      Product.find({ subcategory: subcategoryId })
+        .populate('category')
+        .populate('subcategory')
+        .skip(skip)
+        .limit(limit),
+      Product.countDocuments({ subcategory: subcategoryId })
+    ]);
+
+    if (docs.length === 0) {
+      res.json({ message: 'No hay productos' });
+    } else {
+      const totalPages = Math.ceil(totalDocs / limit);
+      const response = {
+        docs: docs,
+        totalDocs: totalDocs,
+        limit: limit,
+        totalPages: totalPages,
+        page: page,
+        pagingCounter: (page - 1) * limit + 1,
+        hasPrevPage: page > 1,
+        hasNextPage: page < totalPages,
+        prevPage: page > 1 ? page - 1 : null,
+        nextPage: page < totalPages ? page + 1 : null
+      };
+      res.json(response);
+    }
+  } catch (error) {
+    res.status(400).json({ message: 'Error al procesar la petición' });
+  }
+};
+
 //show the list of products
 // const index =(req, res, next)=> {
 // const limit = parseInt(req.query.limit,10) ||10;
@@ -179,31 +220,32 @@ const searchProductByName = async (req, res) => {
 };
 
 
-const subcategory = async (req, res, next) => {
-  const { subcategoryId } = req.params;
-  try {
-    const products = await Product.find({ subcategory: subcategoryId })
-      .populate('category')
-      .populate('subcategory');
+// const subcategory = async (req, res, next) => {
+//   const { subcategoryId } = req.params;
+//   try {
+//     const products = await Product.find({ subcategory: subcategoryId })
+//       .populate('category')
+//       .populate('subcategory');
 
-    if (products.length === 0) {
-      const response = {
-        // data: 'No hay productos',
-        // docs: 'Aquí va la documentación de la respuesta'
+//     if (products.length === 0) {
+//       const response = {
+//         // data: 'No hay productos',
+//         // docs: 'Aquí va la documentación de la respuesta'
         
-      };
-      res.json({ message: 'No hay productos', });
-    } else {
-      const response = {
-        docs: products,
-        // docs: 'Aquí va la documentación de la respuesta'
-      };
-      res.json(response);
-    }
-  } catch (error) {
-    res.status(400).json({ message: 'Error al procesar la petición' });
-  }
-};
+//       };
+//       res.json({ message: 'No hay productos', });
+//     } else {
+//       const response = {
+//         docs: products,
+//         // docs: 'Aquí va la documentación de la respuesta'
+//       };
+//       res.json(response);
+//     }
+//   } catch (error) {
+//     res.status(400).json({ message: 'Error al procesar la petición' });
+//   }
+// };
+
 
 const category = async (req, res, next) => {
   const { categoryId } = req.params;
