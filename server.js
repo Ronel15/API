@@ -64,7 +64,7 @@ app.listen(PORT,()=>{
     V1SwaggerDocs(app, PORT)
 })
 
-// app.use(AuthToken)
+app.use(AuthToken)
 app.use('/auth',AuthRoute)
 app.use('/api/product',ProductRoute)
 app.use('/user',UserRoute)
