@@ -108,6 +108,7 @@ const store = (req, res, next) => {
           //   { data: req.files[2].buffer, contentType: req.files[2].mimetype }
           // ],
           ingredients: req.body.ingredients,
+          totalCalories:req.body.totalCalories,
         });
 
         // Calcular el total de calorías
