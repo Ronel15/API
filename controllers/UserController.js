@@ -34,11 +34,49 @@ const show = (req, res) => {
 };
 
 const create = (req, res) => {
-    new User(req.body)
-        .save()
-        .then((user) => res.status(201).send({ user }))
-        .catch((error) => res.status(500).send({ error }));
+    const { username, email, password } = req.body;
+
+    // Verificar si el correo electrónico es válido y si es de Gmail
+    const emailRegex = /^[^\s@]+@gmail\.com$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).send({ error: 'Dirección de correo electrónico inválida o no es de Gmail' });
+    }
+
+    // Verificar si la contraseña cumple con los requisitos mínimos
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    if (!passwordRegex.test(password)) {
+        return res.status(400).send({ error: 'La contraseña debe tener al menos 8 caracteres y contener al menos un número y una letra mayúscula' });
+    }
+
+    User.findOne({ $or: [{ username }, { email }] }, (err, existingUser) => {
+        if (err) {
+            return res.status(500).send({ error: 'Error interno del servidor' });
+        }
+
+        if (existingUser) {
+            const errors = {};
+            if (existingUser.username === username) {
+                errors.username = 'El nombre de usuario ya existe';
+            }
+            if (existingUser.email === email) {
+                errors.email = 'El correo electrónico ya está registrado';
+            }
+
+            return res.status(409).send({ errors });
+        }
+
+        const user = new User({ username, email, password });
+
+        user.save((err, savedUser) => {
+            if (err) {
+                return res.status(500).send({ error: 'Error interno del servidor' });
+            }
+
+            return res.status(201).send({ user: savedUser });
+        });
+    });
 };
+
 
 const update = (req, res) => {
     if (req.body.error) return res.status(500).send({ error });
