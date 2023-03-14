@@ -64,7 +64,7 @@ app.listen(PORT,()=>{
     V1SwaggerDocs(app, PORT)
 })
 
-app.use(AuthToken)
+// app.use(AuthToken)  
 app.use('/auth',AuthRoute)
 app.use('/api/product',ProductRoute)
 app.use('/user',UserRoute)
@@ -77,7 +77,7 @@ app.use('/calculateCalories' ,CaloriesRoute)
 
 //rutas para movil1
 
-
+//Pruebas
 
 
 //fin rutas movil1
