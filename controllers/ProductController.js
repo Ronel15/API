@@ -7,7 +7,7 @@ const Subcategory = require("../models/Subcategory");
 const img = require('../config/config')
 
 const index = (req, res, next) => {
-  const limit = parseInt(req.query.limit, 10) || 9;
+  const limit = parseInt(req.query.limit, 10) || 4;
   const page = parseInt(req.query.page, 10) || 1;
 
   Product.paginate({}, { limit, page })
