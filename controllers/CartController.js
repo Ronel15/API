@@ -268,11 +268,25 @@ const removeFromCart = async (req, res, next) => {
   }
 };
 
+//vaciar el carrito 
+const removeAllFromCart = async (req, res, next) => {
+  try {
+    const result = await Cart.deleteMany({});
+    console.log(result);
+    res.json({ message: 'Carritos eliminados correctamente' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
+
 module.exports = {
   getCart,
   addToCart,
   removeFromCart,
   updateCart,
   getProductInCart,
-  getCartById
+  getCartById,
+  removeAllFromCart
 };

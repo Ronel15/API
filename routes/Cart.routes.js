@@ -20,4 +20,6 @@ router.delete('/cart/:id', cartController.removeFromCart);
 router.get('/find/:id', cartController.getCartById);
 router.put('/cart/:id', cartController.updateCart);
 
+router.delete('/cart', cartController.removeAllFromCart);
+
 module.exports = router;
