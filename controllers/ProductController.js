@@ -9,16 +9,16 @@ const img = require('../config/config')
 const index = (req, res, next) => {
   const limit = parseInt(req.query.limit, 10) || 4;
   const page = parseInt(req.query.page, 10) || 1;
-
-  Product.paginate({}, { limit, page })
-    .then((response) => {
-      res.json(response);
-    })
-    .catch((error) => {
-      res.json({
-        message: "Error",
-      });
+  Product.paginate({}, { limit, page, sort: { createdAt: -1 } })
+  .then((response) => {
+    res.json(response);
+  })
+  .catch((error) => {
+    res.json({
+      message: "Error",
     });
+  });
+
 };
 
 
