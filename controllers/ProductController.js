@@ -7,19 +7,58 @@ const Subcategory = require("../models/Subcategory");
 const img = require('../config/config')
 
 const index = (req, res, next) => {
-  const limit = parseInt(req.query.limit, 10) || 9;
+  const limit = parseInt(req.query.limit, 10) || 4;
   const page = parseInt(req.query.page, 10) || 1;
-
-  Product.paginate({}, { limit, page })
-    .then((response) => {
-      res.json(response);
-    })
-    .catch((error) => {
-      res.json({
-        message: "Error",
-      });
+  Product.paginate({}, { limit, page, sort: { createdAt: -1 } })
+  .then((response) => {
+    res.json(response);
+  })
+  .catch((error) => {
+    res.json({
+      message: "Error",
     });
+  });
 };
+
+const subcategory = async (req, res, next) => {
+  const { subcategoryId } = req.params;
+  const limit = parseInt(req.query.limit, 10) || 1;
+  const page = parseInt(req.query.page, 10) || 1;
+  const skip = (page - 1) * limit;
+
+  try {
+    const [docs, totalDocs] = await Promise.all([
+      Product.find({ subcategory: subcategoryId })
+        .populate('category')
+        .populate('subcategory')
+        .skip(skip)
+        .limit(limit),
+      Product.countDocuments({ subcategory: subcategoryId })
+    ]);
+
+    if (docs.length === 0) {
+      res.json({ message: 'No hay productos' });
+    } else {
+      const totalPages = Math.ceil(totalDocs / limit);
+      const response = {
+        docs: docs,
+        totalDocs: totalDocs,
+        limit: limit,
+        totalPages: totalPages,
+        page: page,
+        pagingCounter: (page - 1) * limit + 1,
+        hasPrevPage: page > 1,
+        hasNextPage: page < totalPages,
+        prevPage: page > 1 ? page - 1 : null,
+        nextPage: page < totalPages ? page + 1 : null
+      };
+      res.json(response);
+    }
+  } catch (error) {
+    res.status(400).json({ message: 'Error al procesar la petición' });
+  }
+};
+
 //show the list of products
 // const index =(req, res, next)=> {
 // const limit = parseInt(req.query.limit,10) ||10;
@@ -180,37 +219,55 @@ const searchProductByName = async (req, res) => {
 };
 
 
-const subcategory = async (req, res, next) => {
-  const { subcategoryId } = req.params;
-  try {
-    const products = await Product.find({ subcategory: subcategoryId }).populate('category').populate('subcategory');
+// const subcategory = async (req, res, next) => {
+//   const { subcategoryId } = req.params;
+//   try {
+//     const products = await Product.find({ subcategory: subcategoryId })
+//       .populate('category')
+//       .populate('subcategory');
 
-    if (products.length === 0) {
-      res.json('No hay productos')
-    }
-    else {
-      res.json(products);
-    }
-  } catch (error) {
-    res.status(400).json({ message: 'Error al procesar la petición' })
-  }
-}
+//     if (products.length === 0) {
+//       const response = {
+//         // data: 'No hay productos',
+//         // docs: 'Aquí va la documentación de la respuesta'
+        
+//       };
+//       res.json({ message: 'No hay productos', });
+//     } else {
+//       const response = {
+//         docs: products,
+//         // docs: 'Aquí va la documentación de la respuesta'
+//       };
+//       res.json(response);
+//     }
+//   } catch (error) {
+//     res.status(400).json({ message: 'Error al procesar la petición' });
+//   }
+// };
+
 
 const category = async (req, res, next) => {
   const { categoryId } = req.params;
+  const limit = parseInt(req.query.limit, 10) || 9;
+  const page = parseInt(req.query.page, 10) || 1;
+
   try {
-    const products = await Product.find({ category: categoryId }).populate('subcategory').populate('category');
+    const products = await Product.find({ category: categoryId })
+      .populate('subcategory')
+      .populate('category')
+      .skip((page - 1) * limit)
+      .limit(limit);
 
     if (products.length === 0) {
-      res.json('No hay productos')
-    }
-    else {
+      res.json('No hay productos');
+    } else {
       res.json(products);
     }
   } catch (error) {
-    res.status(400).json({ message: 'Error al procesar la petición' })
+    res.status(400).json({ message: 'Error al procesar la petición' });
   }
-}
+};
+
 // const byid = async(req, res) => {
 //   const {idproduct5} = req.params;
 //   await Product.findById(idproduct);
@@ -219,27 +276,25 @@ const category = async (req, res, next) => {
 
 
 const buscar = async (req, res) => {
-  Product.findById(req.params.id).populate({
+  const query = new RegExp(req.params.name, 'i'); // 'i' indica que ignore las mayúsculas y minúsculas
+  Product.find({ name: query }).populate({
     path: "name"
   })
-    .then(product => {
-      if (!product) {
+    .then(products => {
+      if (!products || products.length === 0) {
         return res.status(404).send({
-          message: "Product not found with id " + req.params.id
+          message: "Products not found with name " + req.params.name
         });
       }
-      res.send(product);
+      res.send(products);
     }).catch(err => {
-      if (err.kind === 'ObjectId') {
-        return res.status(404).send({
-          message: "Product not found with id " + req.params.id
-        });
-      }
       return res.status(500).send({
-        message: "Error retrieving product with id " + req.params.id
+        message: "Error retrieving products with name " + req.params.name
       });
     });
 }
+
+
 
 const getProductsCart = async (req, res) => {
   const products = await Product.find();

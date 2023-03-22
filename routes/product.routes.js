@@ -61,7 +61,7 @@ router.get('/subcategory/:subcategoryId', productControllers.subcategory);
 
 router.get('/category/:categoryId', productControllers.category);
 
-router.get('/buscar', productControllers.buscar)
+router.get('/buscar/:name', productControllers.buscar);
 // app.use(AuthToken)
 // router.get('/',productControllers.index)
 
@@ -398,7 +398,7 @@ router.delete('/:idproduct', productControllers.removeByid)
 router.get('/search/:name', productControllers.search)
 
 
-router.get('/products/category/:query', productControllers.category)
+router.get('/category/:query', productControllers.category)
 
 // Rutas Movil
 
